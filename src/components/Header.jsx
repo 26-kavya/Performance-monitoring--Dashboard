@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Bell, Search, Mail, User, Phone, Lock, X, Save, Eye, EyeOff, Filter, Moon, Sun, Settings } from 'lucide-react';
 import axios from 'axios';
 import SmartAlertsPopup from './SmartAlertsPopup';

@@ -84,15 +84,13 @@ const AdminControlBar = ({ onActionComplete }) => {
             complete: async (results) => {
                 const rawStudents = results.data;
                 const formattedStudents = [];
-                const errors = [];
-
                 // 1. Pre-process and validate locally (optional, but good for data sanitation)
                 const parseMark = (val) => {
                     const num = Number(val);
                     return isNaN(num) ? 0 : num;
                 };
 
-                for (const [index, student] of rawStudents.entries()) {
+                for (const student of rawStudents) {
                     // Check for essential fields (adapt as needed)
                     if ((!student.name && !student.Name) || (!student.email && !student.Email)) {
                         continue; // Skip empty/invalid rows locally
