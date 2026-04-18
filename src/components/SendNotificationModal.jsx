@@ -21,7 +21,7 @@ const SendNotificationModal = ({ isOpen, onClose, onActionComplete }) => {
         if (isOpen && formData.recipientType === 'Selected Students') {
             const fetchStudents = async () => {
                 try {
-                    const res = await axios.get('http://localhost:5000/api/students');
+                    const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`);
                     setStudents(res.data);
                 } catch (err) {
                     console.error("Failed to fetch students:", err);
@@ -48,7 +48,7 @@ const SendNotificationModal = ({ isOpen, onClose, onActionComplete }) => {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:5000/api/notifications', formData);
+            await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/notifications`, formData);
             alert('Notification successfully broadcasted!');
             setFormData(initialFormState);
             onClose();

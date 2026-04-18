@@ -25,7 +25,7 @@ const Dashboard = () => {
 
     const fetchActivities = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/activities');
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/activities`);
             setRecentActivities(res.data);
         } catch (e) {
             console.error("Error fetching activities", e);
@@ -34,7 +34,7 @@ const Dashboard = () => {
 
     const fetchStudents = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/students');
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`);
             setAtRiskStudents(res.data);
         } catch(e) {
             console.error("Error fetching students", e);
@@ -64,7 +64,7 @@ const Dashboard = () => {
         if (notifiedStudents.includes(student._id)) return;
         
         try {
-            await axios.post('http://localhost:5000/api/notifications', {
+            await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/notifications`, {
                  title: '⚠️ Low Attendance Warning',
                  message: `Hello ${student.name}, your attendance is currently ${student.attendance}%. You are at risk of being ineligible for exams. Please meet your coordinator.`,
                  type: 'warning',

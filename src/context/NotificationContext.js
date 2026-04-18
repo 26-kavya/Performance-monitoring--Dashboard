@@ -13,7 +13,7 @@ export const NotificationProvider = ({ children }) => {
             const token = localStorage.getItem('userToken');
             if (!token) return;
             
-            const res = await axios.get('http://localhost:5000/api/performance/student/notifications', {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/notifications`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'x-user-id': localStorage.getItem('userId'),
@@ -63,7 +63,7 @@ export const NotificationProvider = ({ children }) => {
     const markRead = async (ids) => {
         try {
             const token = localStorage.getItem('userToken');
-            await axios.patch('http://localhost:5000/api/performance/student/notifications/read', 
+            await axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/notifications/read`, 
                 { notificationIds: ids },
                 {
                     headers: {

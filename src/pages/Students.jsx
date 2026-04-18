@@ -14,7 +14,7 @@ const Students = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/students');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`);
                 setStudents(res.data);
                 setLoading(false);
             } catch (error) {
@@ -58,7 +58,7 @@ const Students = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.put(`http://localhost:5000/api/students/${editingStudent._id}`, editingStudent);
+            const res = await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students/${editingStudent._id}`, editingStudent);
             setStudents(students.map(student => (student._id === editingStudent._id ? res.data : student)));
             setIsEditModalOpen(false);
             setEditingStudent(null);
@@ -72,7 +72,7 @@ const Students = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
             try {
-                await axios.delete(`http://localhost:5000/api/students/${id}`);
+                await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students/${id}`);
                 setStudents(students.filter(student => student._id !== id));
                 setOpenMenuId(null);
             } catch (error) {

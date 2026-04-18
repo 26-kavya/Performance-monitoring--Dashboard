@@ -14,7 +14,7 @@ export const SettingsProvider = ({ children }) => {
 
     const fetchSettings = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/settings');
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/settings`);
             if (res.data) {
                 setSettings(res.data);
             }

@@ -32,7 +32,7 @@ const Header = () => {
             try {
                 if (role === 'student') {
                     // In a real app authMiddleware would parse the token, but we are mocking it for the demo
-                    const res = await axios.get('http://localhost:5000/api/performance/student/dashboard', {
+                    const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/dashboard`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     if (res.data) {
@@ -52,7 +52,7 @@ const Header = () => {
                     }
                 } else if (role === 'admin' || role === 'instructor') {
                     // Fetch from users table to get details
-                    const res = await axios.get('http://localhost:5000/api/users');
+                    const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users`);
                     const adminUser = res.data.find(u => u._id === userId);
                     if (adminUser) {
                         setProfileData(prev => ({
@@ -102,7 +102,7 @@ const Header = () => {
 
             if (Object.keys(updatePayload).length > 0) {
                 if (isAdmin) {
-                    await axios.put(`http://localhost:5000/api/users/${userId}`, updatePayload, {
+                    await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/${userId}`, updatePayload, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'x-user-id': userId,
@@ -110,7 +110,7 @@ const Header = () => {
                         }
                     });
                 } else {
-                    await axios.put('http://localhost:5000/api/performance/student/profile', updatePayload, {
+                    await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/profile`, updatePayload, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'x-user-id': userId,

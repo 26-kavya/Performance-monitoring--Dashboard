@@ -17,7 +17,7 @@ const LandingPage = () => {
         setIsLoading(true);
 
         try {
-            const res = await axios.post('http://localhost:5000/api/login', { email, password });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/login`, { email, password });
             const { role, token, name, _id } = res.data;
 
             // Store minimal session info

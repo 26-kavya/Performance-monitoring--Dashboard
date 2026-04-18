@@ -15,7 +15,7 @@ const AdminSettings = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/users');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users`);
                 setUsers(res.data);
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -69,7 +69,7 @@ const AdminSettings = () => {
 
     const handleSaveSystemSettings = async () => {
         try {
-            await axios.put('http://localhost:5000/api/settings', systemSettings);
+            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/settings`, systemSettings);
             refreshSettings();
             setToastMessage("Saved Successfully");
             setTimeout(() => setToastMessage(''), 3000);
@@ -99,7 +99,7 @@ const AdminSettings = () => {
                     setUsers(users.filter(u => u.id !== id && u._id !== id));
                     return;
                 }
-                await axios.delete(`http://localhost:5000/api/users/${id}`);
+                await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/${id}`);
                 setUsers(users.filter(u => u._id !== id && u.id !== id));
             } catch (error) {
                 console.error("Error deleting user:", error);
@@ -124,13 +124,13 @@ const AdminSettings = () => {
 
         try {
             if (editingUser && editingUser._id) {
-                const res = await axios.put(`http://localhost:5000/api/users/${editingUser._id}`, payload);
+                const res = await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/${editingUser._id}`, payload);
                 setUsers(users.map(u => u._id === editingUser._id ? res.data : u));
             } else if (editingUser && editingUser.id) {
                 // Fallback for editing mocked static data
                 setUsers(users.map(u => u.id === editingUser.id ? { ...u, ...payload } : u));
             } else {
-                const res = await axios.post('http://localhost:5000/api/users', payload);
+                const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users`, payload);
                 setUsers([...users, res.data]);
             }
             setIsUserModalOpen(false);

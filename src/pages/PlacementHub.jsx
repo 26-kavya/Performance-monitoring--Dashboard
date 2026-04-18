@@ -13,7 +13,7 @@ const PlacementHub = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/students');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`);
                 const sorted = [...res.data].sort((a, b) => (b.resume_score || 0) - (a.resume_score || 0));
                 setStudents(sorted);
             } catch (err) {
@@ -27,7 +27,7 @@ const PlacementHub = () => {
 
     const handleStatusChange = async (id, name, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/students/${id}`, { placement_status: newStatus });
+            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students/${id}`, { placement_status: newStatus });
             setStudents(prevStudents => prevStudents.map(s => s._id === id ? { ...s, placement_status: newStatus } : s));
         } catch (err) {
             console.error("Error updating status:", err);

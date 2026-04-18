@@ -66,7 +66,7 @@ const StudentAssignments = () => {
         const fetchAssignments = async () => {
             try {
                 const token = localStorage.getItem('userToken');
-                const res = await axios.get('http://localhost:5000/api/performance/student/assignments', {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/assignments`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'x-user-id': localStorage.getItem('userId'),
@@ -86,7 +86,7 @@ const StudentAssignments = () => {
     const handleSubmissionSuccess = async (id) => {
         try {
             const token = localStorage.getItem('userToken');
-            await axios.patch(`http://localhost:5000/api/performance/student/assignments/${id}`, 
+            await axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/assignments/${id}`, 
                 { status: 'Submitted' },
                 {
                     headers: {
@@ -109,7 +109,7 @@ const StudentAssignments = () => {
     const handleUnsubmit = async (id) => {
         try {
             const token = localStorage.getItem('userToken');
-            await axios.patch(`http://localhost:5000/api/performance/student/assignments/${id}`, 
+            await axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/assignments/${id}`, 
                 { status: 'Pending' },
                 {
                     headers: {

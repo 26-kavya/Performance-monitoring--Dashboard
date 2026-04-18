@@ -21,7 +21,7 @@ const StudentDashboard = () => {
         const fetchDashboardData = async () => {
             try {
                 const token = localStorage.getItem('userToken');
-                const res = await axios.get('http://localhost:5000/api/performance/student/dashboard', {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/performance/student/dashboard`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'x-user-id': localStorage.getItem('userId'),

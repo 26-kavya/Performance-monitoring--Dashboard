@@ -20,7 +20,7 @@ export const MarksTrend = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/dashboard');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/dashboard`);
                 setTrendData(res.data.marksTrend);
             } catch (err) {
                 console.error("Error fetching trends:", err);
@@ -60,7 +60,7 @@ export const PassFailRatio = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/dashboard');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/dashboard`);
                 setPassFailData(res.data.passFailRatio);
             } catch (err) {
                 console.error("Error fetching pass/fail data:", err);

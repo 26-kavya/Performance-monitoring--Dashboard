@@ -60,7 +60,7 @@ const AdminControlBar = ({ onActionComplete }) => {
                 marks: formattedMarks
             };
 
-            await axios.post('http://localhost:5000/api/students', payload);
+            await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`, payload);
             alert('Student added successfully!');
             setIsModalOpen(false);
             setFormData(initialFormState);
@@ -126,7 +126,7 @@ const AdminControlBar = ({ onActionComplete }) => {
 
                 // 2. Send to Backend
                 try {
-                    const response = await axios.post('http://localhost:5000/api/students/bulk', formattedStudents);
+                    const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students/bulk`, formattedStudents);
                     const { successCount, failCount, errors: backendErrors } = response.data;
 
                     let message = `Bulk Upload Complete.\nSuccess: ${successCount}\nFailed: ${failCount}`;
@@ -157,7 +157,7 @@ const AdminControlBar = ({ onActionComplete }) => {
 
     const handleExportPDF = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/students');
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/students`);
             const students = res.data;
 
             const doc = new jsPDF();

@@ -20,7 +20,7 @@ export const SubjectPerformance = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/dashboard');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/dashboard`);
                 setData(res.data.subjectPerformance);
             } catch (err) {
                 console.error("Error fetching subject performance:", err);
@@ -54,7 +54,7 @@ export const AttendanceRadial = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/dashboard');
+                const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/dashboard`);
                 const { present, absent } = res.data.attendanceRadial;
 
                 const total = present + absent;
