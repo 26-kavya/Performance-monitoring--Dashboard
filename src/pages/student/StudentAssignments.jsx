@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Calendar, FileText, CheckCircle, Clock } from 'lucide-react';
+import { Calendar, CheckCircle, Clock } from 'lucide-react';
 import axios from 'axios';
 
 const SubmitButton = ({ assignmentId, onSuccess }) => {
