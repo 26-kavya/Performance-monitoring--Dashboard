@@ -281,14 +281,31 @@ const loginUser = asyncHandler(async (req, res) => {
     // Check for Student
     const student = await Student.findOne({ email });
 
-    if (student && student.password === password) {
-        return res.json({
-            _id: student._id,
-            name: student.name,
-            email: student.email,
-            role: 'student',
-            token: 'mock-student-token-123'
-        });
+    if (student) {
+        let isMatch = false;
+        
+        // Plain text fallback (for previously created students)
+        if (student.password === password) {
+            isMatch = true;
+        } else {
+            // Check bcrypt format
+            const bcrypt = require('bcryptjs');
+            try {
+                isMatch = await bcrypt.compare(password, student.password);
+            } catch (e) {
+                isMatch = false;
+            }
+        }
+
+        if (isMatch) {
+            return res.json({
+                _id: student._id,
+                name: student.name,
+                email: student.email,
+                role: 'student',
+                token: 'mock-student-token-123'
+            });
+        }
     }
 
     res.status(401);

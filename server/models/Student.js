@@ -21,7 +21,7 @@ const studentSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        default: 'password123', // Default for now until properly hashed or assigned
+        // Password is now explicitly generated and hashed in the controller before save
     },
     profilePic: {
         type: String,

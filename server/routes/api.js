@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const Student = require('../models/Student');
 const DashboardData = require('../models/DashboardData');
 const Notification = require('../models/Notification');
@@ -126,6 +127,10 @@ router.post('/students', async (req, res) => {
             }
         }
 
+        // Generate and hash default password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('student@123', salt);
+
         const student = await Student.create({
             name,
             email,
@@ -135,7 +140,8 @@ router.post('/students', async (req, res) => {
             marks: marks || {},
             resume_score: resume_score || 0,
             skills: skills || [],
-            placement_status: placement_status || 'Not Placed'
+            placement_status: placement_status || 'Not Placed',
+            password: hashedPassword
         });
         
         await Activity.create({
@@ -205,6 +211,32 @@ router.put('/students/:id', async (req, res) => {
     }
 });
 
+// @desc    Reset student password manually by Admin
+// @route   POST /api/students/:id/reset-password
+// @access  Public (for now)
+router.post('/students/:id/reset-password', async (req, res) => {
+    try {
+        const student = await Student.findById(req.params.id);
+
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        student.password = await bcrypt.hash('student@123', salt);
+        await student.save();
+
+        await Activity.create({
+            action: `Admin reset password for student ${student.name}.`
+        });
+
+        res.json({ message: 'Password reset successfully to default' });
+    } catch (error) {
+        console.error("Reset password error:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // @desc    Bulk upload students
 // @route   POST /api/students/bulk
 // @access  Public
@@ -221,6 +253,9 @@ router.post('/students/bulk', async (req, res) => {
             failCount: 0,
             errors: []
         };
+
+        const salt = await bcrypt.genSalt(10);
+        const defaultHashedPassword = await bcrypt.hash('student@123', salt);
 
         // Process each student to ensure correct data types/defaults before insertion
         const processedStudents = students.map(student => {
@@ -252,7 +287,8 @@ router.post('/students/bulk', async (req, res) => {
                 marks: sanitizedMarks,
                 resume_score: Number(student.resume_score) || 0,
                 skills: Array.isArray(student.skills) ? student.skills : [],
-                placement_status: student.placement_status || 'Not Placed'
+                placement_status: student.placement_status || 'Not Placed',
+                password: defaultHashedPassword
             };
         });
 
